@@ -125,3 +125,4 @@ docker/*local*
 
 # Jest test report
 test-report.html
+superset-frontend/error.txt.txt
