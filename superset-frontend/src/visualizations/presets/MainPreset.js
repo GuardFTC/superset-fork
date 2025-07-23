@@ -81,8 +81,8 @@ import {
 import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/plugin-chart-pivot-table';
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { FilterPlugins } from 'src/constants';
+import RetentionTableChartPlugin from '@superset-ui/plugin-chart-retention-table';
 import TimeTableChartPlugin from '../TimeTable';
-import RetentionTableChartPlugin from "@superset-ui/plugin-chart-retention-table";
 
 export default class MainPreset extends Preset {
   constructor() {

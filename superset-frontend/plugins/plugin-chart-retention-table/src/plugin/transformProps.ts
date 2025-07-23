@@ -24,9 +24,10 @@ import {
   getTimeFormatter,
   getTimeFormatterForGranularity,
   QueryFormData,
-  TimeFormats, SMART_DATE_ID,
+  TimeFormats,
+  SMART_DATE_ID,
 } from '@superset-ui/core';
-import {DateFormatter} from '../types';
+import { DateFormatter } from '../types';
 
 const { DATABASE_DATETIME } = TimeFormats;
 
@@ -95,7 +96,7 @@ export default function transformProps(chartProps: ChartProps<QueryFormData>) {
     showBaseMetric,
     fixedBaseMetric,
     baseMetricLabel,
-    target_color_picker
+    target_color_picker,
   } = formData;
   const { selectedFilters } = filterState;
   const granularity = extractTimegrain(rawFormData);
@@ -156,6 +157,6 @@ export default function transformProps(chartProps: ChartProps<QueryFormData>) {
     showBaseMetric,
     fixedBaseMetric,
     baseMetricLabel,
-    target_color_picker
+    target_color_picker,
   };
 }

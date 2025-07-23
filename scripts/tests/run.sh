@@ -30,7 +30,7 @@ function reset_db() {
   RESET_DB_CMD="psql \"postgresql://${DB_USER}:${DB_PASSWORD}@127.0.0.1:5432\" <<-EOF
     DROP DATABASE IF EXISTS ${DB_NAME};
     CREATE DATABASE ${DB_NAME};
-    \\c ${DB_NAME}
+    \c ${DB_NAME}
     DROP SCHEMA IF EXISTS sqllab_test_db;
     CREATE SCHEMA sqllab_test_db;
     DROP SCHEMA IF EXISTS admin_database;

@@ -63,10 +63,10 @@ interface RetentionTableQueryProps {
   fixedBaseMetric: boolean;
   baseMetricLabel: string;
   target_color_picker: {
-    r: number
-    g: number
-    b: number
-    a?: number
+    r: number;
+    g: number;
+    b: number;
+    a?: number;
   };
 }
 
@@ -76,5 +76,5 @@ export type RetentionTableQueryFormData = QueryFormData &
 
 export type RetentionTableProps = TableStylesProps &
   RetentionTableQueryProps & {
-  data: DataRecord[];
-};
+    data: DataRecord[];
+  };

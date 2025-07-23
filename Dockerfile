@@ -27,11 +27,21 @@ FROM --platform=${BUILDPLATFORM} node:18-bullseye-slim AS superset-node
 ARG NPM_BUILD_CMD="build"
 
 # Somehow we need python3 + build-essential on this side of the house to install node-gyp
-RUN apt-get update -qq \
-    && apt-get install \
-        -yqq --no-install-recommends \
-        build-essential \
-        python3
+#RUN apt-get update -qq \
+#    && apt-get install \
+#        -yqq --no-install-recommends \
+#        build-essential \
+#        python3
+
+# 先用 HTTP 源更新，再装 ca-certificates，最后切换 HTTPS
+RUN sed -i 's@http://deb.debian.org/debian@http://mirrors.tuna.tsinghua.edu.cn/debian@g' /etc/apt/sources.list \
+    && apt-get update -qq \
+    && apt-get install -yqq --no-install-recommends ca-certificates \
+    && update-ca-certificates \
+    && sed -i 's@http://mirrors.tuna.tsinghua.edu.cn/debian@https://mirrors.tuna.tsinghua.edu.cn/debian@g' /etc/apt/sources.list \
+    && apt-get update -qq \
+    && apt-get install -yqq --no-install-recommends build-essential python3 \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -41,8 +51,11 @@ RUN --mount=type=bind,target=/frontend-mem-nag.sh,src=./docker/frontend-mem-nag.
     /frontend-mem-nag.sh
 
 WORKDIR /app/superset-frontend
+# Set npm registry to a mirror for faster downloads
+RUN npm config set registry https://registry.npmmirror.com
 RUN --mount=type=bind,target=./package.json,src=./superset-frontend/package.json \
     --mount=type=bind,target=./package-lock.json,src=./superset-frontend/package-lock.json \
+    --mount=type=cache,target=/root/.npm \
     npm ci
 
 # Runs the webpack build process

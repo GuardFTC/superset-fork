@@ -17,10 +17,13 @@
  * under the License.
  */
 // @ts-ignore
-import {ControlPanelConfig, D3_TIME_FORMAT_OPTIONS, sharedControls} from "@superset-ui/chart-controls";
-import {t, validateNonEmpty} from "@superset-ui/core";
-import {PRIMARY_COLOR} from "../changeColor";
-
+import {
+  ControlPanelConfig,
+  D3_TIME_FORMAT_OPTIONS,
+  sharedControls,
+} from '@superset-ui/chart-controls';
+import { t, validateNonEmpty } from '@superset-ui/core';
+import { PRIMARY_COLOR } from '../changeColor';
 
 const config: ControlPanelConfig = {
   controlPanelSections: [
@@ -35,7 +38,7 @@ const config: ControlPanelConfig = {
               ...sharedControls.groupby,
               multi: false,
               validators: [validateNonEmpty],
-              label: "维度",
+              label: '维度',
               description: t('选择维度列'),
             },
           },
@@ -47,7 +50,7 @@ const config: ControlPanelConfig = {
               ...sharedControls.groupby,
               multi: false,
               validators: [validateNonEmpty],
-              label: "阶段",
+              label: '阶段',
               description: t('选择阶段列'),
             },
           },
@@ -77,8 +80,10 @@ const config: ControlPanelConfig = {
               label: t('Show Rate'),
               renderTrigger: true,
               default: false,
-              description: t('Show total values for stacked bar chart (can be applied correctly only without composition with other charts)'),
-            }
+              description: t(
+                'Show total values for stacked bar chart (can be applied correctly only without composition with other charts)',
+              ),
+            },
           },
         ],
       ],
@@ -95,20 +100,23 @@ const config: ControlPanelConfig = {
               type: 'CheckboxControl',
               label: t('使用基准指标'),
               default: false,
-              description: t('使用基准指标,计算会使用(指标/基准指标)作为留存比例, 如果不勾选此项目, 将阶段0的指标值作为基准指标'),
-            }
-          }
+              description: t(
+                '使用基准指标,计算会使用(指标/基准指标)作为留存比例, 如果不勾选此项目, 将阶段0的指标值作为基准指标',
+              ),
+            },
+          },
         ],
         [
           {
             name: 'baseMetric',
             config: {
               ...sharedControls.metric,
-              visibility: ({form_data}: { form_data: Record<string, any> }) => !!form_data.useBaseMetric,
+              visibility: ({ form_data }: { form_data: Record<string, any> }) =>
+                !!form_data.useBaseMetric,
               validators: [],
               label: t('基准指标'),
-            }
-          }
+            },
+          },
         ],
         [
           {
@@ -119,8 +127,8 @@ const config: ControlPanelConfig = {
               renderTrigger: true,
               default: false,
               description: t('图表中将基准指标列作为单独列展示'),
-            }
-          }
+            },
+          },
         ],
         [
           {
@@ -128,12 +136,13 @@ const config: ControlPanelConfig = {
             config: {
               type: 'CheckboxControl',
               label: t('固定基准指标列'),
-              visibility: ({form_data}: { form_data: Record<string, any> }) => !!form_data.showBaseMetric,
+              visibility: ({ form_data }: { form_data: Record<string, any> }) =>
+                !!form_data.showBaseMetric,
               renderTrigger: true,
               default: true,
               description: t('图表中展示基准指标列固定,不可滚动'),
-            }
-          }
+            },
+          },
         ],
         [
           {
@@ -141,13 +150,14 @@ const config: ControlPanelConfig = {
             config: {
               type: 'TextControl',
               label: t('Period 0 Label'),
-              visibility: ({form_data}: { form_data: Record<string, any> }) => !!form_data.showBaseMetric,
+              visibility: ({ form_data }: { form_data: Record<string, any> }) =>
+                !!form_data.showBaseMetric,
               default: 'period0',
               description: t('图表中显示基准指标列的表头'),
-            }
-          }
+            },
+          },
         ],
-      ]
+      ],
     },
     {
       label: t('Options'),
@@ -161,9 +171,11 @@ const config: ControlPanelConfig = {
               label: t('格式化阶段表头'),
               renderTrigger: true,
               default: '{period}',
-              description: t('将阶段列的表头格式化为指定的格式, 可以使用 {period} 占位符表示阶段值'),
-            }
-          }
+              description: t(
+                '将阶段列的表头格式化为指定的格式, 可以使用 {period} 占位符表示阶段值',
+              ),
+            },
+          },
         ],
         [
           {
@@ -197,8 +209,8 @@ const config: ControlPanelConfig = {
               renderTrigger: true,
               default: true,
               description: t('显示背景颜色, 通过颜色深浅区分百分比'),
-            }
-          }
+            },
+          },
         ],
         [
           {
@@ -207,12 +219,12 @@ const config: ControlPanelConfig = {
               label: t('Fixed Color'),
               type: 'ColorPickerControl',
               default: PRIMARY_COLOR,
-              renderTrigger: true
-            }
+              renderTrigger: true,
+            },
           },
-        ]
-      ]
-    }
-  ]
-}
+        ],
+      ],
+    },
+  ],
+};
 export default config;

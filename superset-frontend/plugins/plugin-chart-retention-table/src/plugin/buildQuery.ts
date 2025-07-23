@@ -16,24 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {buildQueryContext, QueryFormColumn,} from '@superset-ui/core';
-import {RetentionTableQueryFormData} from '../types';
+import { buildQueryContext, QueryFormColumn } from '@superset-ui/core';
+import { RetentionTableQueryFormData } from '../types';
 
 export default function buildQuery(formData: RetentionTableQueryFormData) {
-
   const columns: QueryFormColumn[] = Array.from(
-    new Set([formData.dimension, formData.period])
+    new Set([formData.dimension, formData.period]),
   );
-  let metrics = [formData.metric]
+  let metrics = [formData.metric];
 
   if (formData.useBaseMetric) {
-    metrics = Array.from(new Set([formData.metric, formData.baseMetric]))
+    metrics = Array.from(new Set([formData.metric, formData.baseMetric]));
   }
 
   return buildQueryContext(formData, baseQueryObject => [
     {
       ...baseQueryObject,
-      orderby: [[formData.dimension, false], [formData.period, true]],
+      orderby: [
+        [formData.dimension, false],
+        [formData.period, true],
+      ],
       columns,
       metrics,
     },

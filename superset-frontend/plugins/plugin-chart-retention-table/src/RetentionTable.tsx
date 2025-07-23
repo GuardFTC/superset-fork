@@ -1,9 +1,16 @@
-import {Table} from "antd";
+import { Table } from 'antd';
 // eslint-disable-next-line no-restricted-syntax
-import React, {useMemo} from "react";
-import {DataRecord, getColumnLabel, getMetricLabel, QueryFormMetric, styled, useTheme} from "@superset-ui/core";
-import {RetentionTableProps, TableStylesProps} from "./types";
-import lerpColor, {PRIMARY_COLOR} from "./changeColor";
+import React, { useMemo } from 'react';
+import {
+  DataRecord,
+  getColumnLabel,
+  getMetricLabel,
+  QueryFormMetric,
+  styled,
+  useTheme,
+} from '@superset-ui/core';
+import { RetentionTableProps, TableStylesProps } from './types';
+import lerpColor, { PRIMARY_COLOR } from './changeColor';
 
 function transformData(
   data: DataRecord[],
@@ -18,7 +25,7 @@ function transformData(
   const transformed: Record<any, any> = {};
 
   // 遍历原始数据
-  data.forEach((item) => {
+  data.forEach(item => {
     const dimensionValue = item[dimension];
     const dimensionValueKey = dimensionValue?.toString() ?? 'null';
     const periodValue = item[period] as number;
@@ -28,7 +35,8 @@ function transformData(
     if (!transformed[dimensionValueKey]) {
       transformed[dimensionValueKey] = {};
       if (useBaseMetric) {
-        transformed[dimensionValueKey][baseMetricLabel] = item[getMetricLabel(baseMetric)];
+        transformed[dimensionValueKey][baseMetricLabel] =
+          item[getMetricLabel(baseMetric)];
       }
     }
 
@@ -44,12 +52,12 @@ function transformData(
 }
 
 const Styles = styled.div<TableStylesProps>`
-  ${({height, width, margin}) => `
+  ${({ height, width, margin }) => `
       margin: ${margin}px;
       height: ${height - margin * 2}px;
       width: ${
-    typeof width === 'string' ? parseInt(width, 10) : width - margin * 2
-  }px;
+        typeof width === 'string' ? parseInt(width, 10) : width - margin * 2
+      }px;
  `}
 `;
 
@@ -57,7 +65,7 @@ const RetentionTableWrapper = styled.div`
   height: 100%;
   max-width: inherit;
   overflow: auto;
-  th.retention-table-call{
+  th.retention-table-call {
     text-align: center !important;
     font-weight: bold !important;
   }
@@ -72,7 +80,7 @@ const RetentionTableWrapper = styled.div`
       padding: 0 10px !important;
       text-align: left !important;
     }
-    &.period{
+    &.period {
       text-align: right !important;
     }
   }
@@ -117,118 +125,120 @@ export default function RetentionTable(props: RetentionTableProps) {
     target_color_picker = PRIMARY_COLOR,
   } = props;
   const theme = useTheme();
-  console.log(target_color_picker)
+  console.log(target_color_picker);
   function formatPeriod(value: string) {
     return periodColumnFormat.replace('{period}', value);
   }
 
   const [_columns, _data] = useMemo(() => {
-        const dimension_name = getColumnLabel(dimension)
-        const period_name = getColumnLabel(period)
-        const metric_name = getMetricLabel(metric)
-        const periods = Array.from(new Set(data.map((item: any) => item[period_name])))
-        const columns = [
-          {
-            title: dimension_name,
-            dataIndex: dimension_name,
-            ellipsis: true,
-            width: 150,
-            fixed: true,
-            className: 'dimension retention-table-call',
-            render: (text: any) => {
-              const lable = dateFormatters[dimension_name]?.(text) ?? text
-              return <div>{lable}</div>
-            }
-          }, {
-            title: baseMetricLabel,
-            dataIndex: baseMetricLabel,
-            width: 128,
-            fixed: fixedBaseMetric,
-            className: 'retention-table-call',
-            render: (text: any) => (
-              <div>{text}</div>
-            )
-          },
-          ...periods.map((period: string) => ({
-              title: formatPeriod(period),
-              dataIndex: period,
-              width: 128,
-              className: 'period retention-table-call',
-              render: (text: any, record: any) => {
-                const period0 = record?.[baseMetricLabel] ?? Infinity as number
-                const rate = text as number / period0 * 100
-                if (!text) {
-                  return <div>-</div>
-                }
-                if (showRate && rate) {
-                  const rateLabel = rate ? `${rate.toFixed(2)}%` : ''
-                  return (
-                    <div style={textStyle(rate)}>
-                      <p>{text}</p>
-                      <p>{rateLabel}</p>
-                    </div>
-                  )
-                }
-                return (
-                  <div style={textStyle(rate)}>
-                    {text}
-                  </div>
-                )
-              }
-            })
-          )
-        ]
-        if (!showBaseMetric) {
-          columns.splice(1, 1)
-        }
-        const transform_data = transformData(data, dimension_name, period_name, metric_name, baseMetricLabel, useBaseMetric, baseMetric)
-        return [columns, transform_data]
+    const dimension_name = getColumnLabel(dimension);
+    const period_name = getColumnLabel(period);
+    const metric_name = getMetricLabel(metric);
+    const periods = Array.from(
+      new Set(data.map((item: any) => item[period_name])),
+    );
+    const columns = [
+      {
+        title: dimension_name,
+        dataIndex: dimension_name,
+        ellipsis: true,
+        width: 150,
+        fixed: true,
+        className: 'dimension retention-table-call',
+        render: (text: any) => {
+          const lable = dateFormatters[dimension_name]?.(text) ?? text;
+          return <div>{lable}</div>;
+        },
       },
-      [
-        dimension,
-        period,
-        metric,
-        showRate,
-        showBaseMetric,
-        showBgColor,
-        fixedBaseMetric,
-        periodColumnFormat,
-        data,
-        dateFormatters,
-        target_color_picker
-      ]
-    )
-  ;
-
+      {
+        title: baseMetricLabel,
+        dataIndex: baseMetricLabel,
+        width: 128,
+        fixed: fixedBaseMetric,
+        className: 'retention-table-call',
+        render: (text: any) => <div>{text}</div>,
+      },
+      ...periods.map((period: string) => ({
+        title: formatPeriod(period),
+        dataIndex: period,
+        width: 128,
+        className: 'period retention-table-call',
+        render: (text: any, record: any) => {
+          const period0 = record?.[baseMetricLabel] ?? (Infinity as number);
+          const rate = ((text as number) / period0) * 100;
+          if (!text) {
+            return <div>-</div>;
+          }
+          if (showRate && rate) {
+            const rateLabel = rate ? `${rate.toFixed(2)}%` : '';
+            return (
+              <div style={textStyle(rate)}>
+                <p>{text}</p>
+                <p>{rateLabel}</p>
+              </div>
+            );
+          }
+          return <div style={textStyle(rate)}>{text}</div>;
+        },
+      })),
+    ];
+    if (!showBaseMetric) {
+      columns.splice(1, 1);
+    }
+    const transform_data = transformData(
+      data,
+      dimension_name,
+      period_name,
+      metric_name,
+      baseMetricLabel,
+      useBaseMetric,
+      baseMetric,
+    );
+    return [columns, transform_data];
+  }, [
+    dimension,
+    period,
+    metric,
+    showRate,
+    showBaseMetric,
+    showBgColor,
+    fixedBaseMetric,
+    periodColumnFormat,
+    data,
+    dateFormatters,
+    target_color_picker,
+  ]);
   function textStyle(rate: number) {
     if (!showBgColor) {
-      return {color: 'rgb(11 17 52)'}
+      return { color: 'rgb(11 17 52)' };
     }
     if (rate > 70) {
       return {
         color: 'rgb(255 255 255)',
-        background: lerpColor(target_color_picker, rate)
-      }
+        background: lerpColor(target_color_picker, rate),
+      };
     }
     return {
       color: 'rgb(11 17 52)',
-      background: lerpColor(target_color_picker, rate)
-    }
+      background: lerpColor(target_color_picker, rate),
+    };
   }
 
   return (
     <Styles height={height} width={width} margin={theme.gridUnit * 4}>
       <RetentionTableWrapper>
-        <Table columns={_columns}
-               style={{width: '100%', height: '100%'}}
-               bordered
-               sticky
-               rowClassName="retention-table-row"
-               size="small"
-               dataSource={_data}
-               pagination={false}
-               scroll={{x: '100%', y: '100%'}}/>
+        <Table
+          columns={_columns}
+          style={{ width: '100%', height: '100%' }}
+          bordered
+          sticky
+          rowClassName="retention-table-row"
+          size="small"
+          dataSource={_data}
+          pagination={false}
+          scroll={{ x: '100%', y: '100%' }}
+        />
       </RetentionTableWrapper>
     </Styles>
-  )
+  );
 }

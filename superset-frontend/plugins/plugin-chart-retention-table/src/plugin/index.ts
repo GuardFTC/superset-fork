@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {ChartMetadata, ChartPlugin, t} from '@superset-ui/core';
+import { ChartMetadata, ChartPlugin, t } from '@superset-ui/core';
 import buildQuery from './buildQuery';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
@@ -29,7 +29,7 @@ const metadata = new ChartMetadata({
   tags: [t('Additive'), t('Report'), t('Tabular'), t('Popular')],
   name: t('Retention Table'),
   exampleGallery: [{ url: thumbnail }],
-  thumbnail
+  thumbnail,
 });
 export default class ComposedChart extends ChartPlugin {
   constructor() {
@@ -38,7 +38,7 @@ export default class ComposedChart extends ChartPlugin {
       controlPanel,
       loadChart: () => import('../RetentionTable'),
       metadata,
-      transformProps
+      transformProps,
     });
   }
 }
